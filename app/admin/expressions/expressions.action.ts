@@ -32,7 +32,7 @@ export const createExpressionAction = async (expression: Expression) => {
         }
     }
     catch { 
-        console.error("Erreur lors de la création", expression);
+        console.error("Erreur lors de la création de l'expression :", expression);
         return { message: "Error" } }
 }
 

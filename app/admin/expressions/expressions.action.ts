@@ -17,6 +17,29 @@ export const getExpressionsAction: () => Promise<Expression[]> = async () => {
     }
 }
 
+export const modifyExpressionAction = async (expressionId: number, expression: Expression) => {
+    console.log("🚀 ~ modifyExpressionAction ~ expression:", expression)
+    console.log("🚀 ~ createExpressionAction ~ expressionId:", expressionId)
+    try {
+        console.log("zzzz")
+        await prisma.expression.update({
+            where: {
+                id: expressionId
+            },
+            data: {
+                text: expression.text,
+                info: expression.info
+            }
+        });
+        return {
+            message: 'Updated'
+        }
+    }
+    catch { 
+        console.error("Erreur lors de la modification de l'expression :", expressionId);
+        return { message: "Error" } }
+}
+
 export const createExpressionAction = async (expression: Expression) => {
     console.log("🚀 ~ createExpressionAction ~ expression:", expression)
     try {

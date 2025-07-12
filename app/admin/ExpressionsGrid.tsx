@@ -5,36 +5,52 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { useMemo } from "react";
 import { SuppressButonCellRenderer } from "./CellRenderers";
+import './expressions.css';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
+
+interface GridExpression extends Expression { id?: number };
 
 export interface ExpressionsGridProps {
     expressions: Expression[]
     refresh: () => void;
+    actOnRowClick: (id?: number) => void
+    gridRef: React.RefObject<AgGridReact>;
 }
-export const ExpressionsGrid = (props: ExpressionsGridProps) => {
-    console.log("🚀 ~ ExpressionsGrid ~ props:", props)
-    const colDefs = useMemo<ColDef[]>(() => ([
-        { field: 'id', flex: 1 },
+export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProps) => {
+    const colDefs = useMemo<ColDef<GridExpression>[]>(() => ([
+        // {
+        //     field: 'id',
+        //     flex: 1
+        // },
         {
             field: 'text', flex: 5,
-            editable: true,
-            cellEditor: 'agLargeTextCellEditor',
-            cellEditorPopup: true,
-            cellEditorParams: {
-                rows: 10,
-                cols: 100,
-                maxLength: 1000
-            }
+            editable: false,
         },
-        { field: 'info', flex: 2 },
-        { colId: 'suppress', flex: 1, cellRenderer: SuppressButonCellRenderer }
+        {
+            field: 'info',
+            flex: 2,
+        },
+        {
+            colId: 'suppress',
+            flex: 1,
+            cellRenderer: SuppressButonCellRenderer,
+            style: { paddingLeft: '0' }
+        }
     ]), []);
 
     console.log("🚀 ~ ExpressionsGrid ~ props.expressions:", props.expressions)
     return (
         <div className="ag-theme-alpine" style={{ width: "100%", flex: 1 }}>
-            <AgGridReact rowData={props.expressions} columnDefs={colDefs} context={{ refresh: props.refresh }} />
+            <AgGridReact
+                rowData={props.expressions}
+                columnDefs={colDefs}
+                context={{ refresh: props.refresh }}
+                onCellClicked={(event) => {
+                    if (event.data && ['info', 'text'].includes(event.column.getColId())) actOnRowClick(event.data?.id)
+                }}
+                ref={props.gridRef}
+            />
         </div>
     )
 }

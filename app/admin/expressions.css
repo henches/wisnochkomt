@@ -1,0 +1,3 @@
+:where(.ag-ltr) .ag-cell:not(.ag-cell-inline-editing) {
+  padding-left: 4
+}

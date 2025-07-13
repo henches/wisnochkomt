@@ -13,7 +13,8 @@ datasource db {
 
 model Expression {
   id        Int      @id @default(autoincrement())
-  text      String   @unique
+  text      String   
+  author    String   
   info      String
   createdAt DateTime @default(now())
 }

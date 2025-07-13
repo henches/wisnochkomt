@@ -10,8 +10,9 @@ import { createExpressionAction, getExpressionsAction, modifyExpressionAction } 
 import { ExpressionsGrid } from "./admin/ExpressionsGrid";
 
 type RowType = {
-  text?: string;
-  info?: string;
+  text?: string
+  author?: string
+  info?: string
 };
 
 const INTITIAL_VALUES = {
@@ -20,7 +21,8 @@ const INTITIAL_VALUES = {
 }
 
 export interface MainPage {
-  gridRef: React.RefObject<AgGridReact | null>
+  gridRef: React.RefObject<AgGridReact | null>,
+  refreshRef: React.RefObject<VoidFunction | null>
 }
 
 export default function MainPage(props: MainPage) {
@@ -36,6 +38,10 @@ export default function MainPage(props: MainPage) {
   }, []);
 
   useEffect(() => {
+    props.refreshRef.current = refresh
+  }, [props.refreshRef, refresh]);
+
+  useEffect(() => {
     refresh();
   }, [refresh])
 
@@ -47,6 +53,7 @@ export default function MainPage(props: MainPage) {
       if (!expression) throw Error("Should never happen");
       const fieldsValue: RowType = {
         text: expression.text,
+        author: expression.author,
         info: expression.info
       }
       form.setFieldsValue(fieldsValue)
@@ -57,10 +64,13 @@ export default function MainPage(props: MainPage) {
     if (createOrModifyId === null) return;
     const expression: Expression = {
       text: values.text ?? '',
+      author: values.author ?? '',
       info: values.info ?? ''
     }
     console.log("🚀 ~ constonFinish:FormProps<FieldType>['onFinish']= ~ expression:", expression)
-    const result = await (createOrModifyId === undefined ? createExpressionAction(expression) : modifyExpressionAction(createOrModifyId, expression));
+    const result = await (createOrModifyId === undefined ?
+      createExpressionAction(expression) :
+      modifyExpressionAction(createOrModifyId, expression));
     message.success(createOrModifyId === undefined ? "Crée" : "Modifié");
     console.log("🚀 ~ constonFinish:FormProps<FieldType>['onFinish']= ~ result:", result)
     if (result.message) {
@@ -69,15 +79,19 @@ export default function MainPage(props: MainPage) {
   };
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', width: '100%', padding: '10px', gap: '15px' }}>
-      <ExpressionsGrid
-        gridRef={props.gridRef as React.RefObject<AgGridReact>}
-        expressions={expressions}
-        refresh={refresh}
-        actOnRowClick={setCreateOrModifyId} />
-      <Button onClick={() => setCreateOrModifyId(undefined)}>
-        <PlusIcon />
-      </Button>
+    <>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', padding: '10px', gap: '15px' }}>
+        <div style={{ flexGrow: 1 }}>
+          <ExpressionsGrid
+            gridRef={props.gridRef as React.RefObject<AgGridReact>}
+            expressions={expressions}
+            refresh={refresh}
+            actOnRowClick={setCreateOrModifyId} />
+        </div>
+        <Button onClick={() => setCreateOrModifyId(undefined)}>
+          <PlusIcon />
+        </Button>
+      </div>
       <Modal
         open={createOrModifyId !== null}
         title={`${createOrModifyId === undefined ? 'Ajouter' : 'Modifier'} une expression`}
@@ -92,7 +106,6 @@ export default function MainPage(props: MainPage) {
       >
         <Form form={form} style={{ maxWidth: 600 }} initialValues={INTITIAL_VALUES}
           onFinish={onFinish}
-        // onFinishFailed={onFinishFailed} 
         >
           <Form.Item<RowType> label="Texte" name="text" rules={[{ required: true, message: 'Merci de saisir le texte' }]} >
             <Input />
@@ -102,6 +115,6 @@ export default function MainPage(props: MainPage) {
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </>
   )
 }

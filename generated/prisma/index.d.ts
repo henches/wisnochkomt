@@ -892,6 +892,7 @@ export namespace Prisma {
   export type ExpressionMinAggregateOutputType = {
     id: number | null
     text: string | null
+    author: string | null
     info: string | null
     createdAt: Date | null
   }
@@ -899,6 +900,7 @@ export namespace Prisma {
   export type ExpressionMaxAggregateOutputType = {
     id: number | null
     text: string | null
+    author: string | null
     info: string | null
     createdAt: Date | null
   }
@@ -906,6 +908,7 @@ export namespace Prisma {
   export type ExpressionCountAggregateOutputType = {
     id: number
     text: number
+    author: number
     info: number
     createdAt: number
     _all: number
@@ -923,6 +926,7 @@ export namespace Prisma {
   export type ExpressionMinAggregateInputType = {
     id?: true
     text?: true
+    author?: true
     info?: true
     createdAt?: true
   }
@@ -930,6 +934,7 @@ export namespace Prisma {
   export type ExpressionMaxAggregateInputType = {
     id?: true
     text?: true
+    author?: true
     info?: true
     createdAt?: true
   }
@@ -937,6 +942,7 @@ export namespace Prisma {
   export type ExpressionCountAggregateInputType = {
     id?: true
     text?: true
+    author?: true
     info?: true
     createdAt?: true
     _all?: true
@@ -1031,6 +1037,7 @@ export namespace Prisma {
   export type ExpressionGroupByOutputType = {
     id: number
     text: string
+    author: string
     info: string
     createdAt: Date
     _count: ExpressionCountAggregateOutputType | null
@@ -1057,6 +1064,7 @@ export namespace Prisma {
   export type ExpressionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     text?: boolean
+    author?: boolean
     info?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["expression"]>
@@ -1064,6 +1072,7 @@ export namespace Prisma {
   export type ExpressionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     text?: boolean
+    author?: boolean
     info?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["expression"]>
@@ -1071,6 +1080,7 @@ export namespace Prisma {
   export type ExpressionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     text?: boolean
+    author?: boolean
     info?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["expression"]>
@@ -1078,11 +1088,12 @@ export namespace Prisma {
   export type ExpressionSelectScalar = {
     id?: boolean
     text?: boolean
+    author?: boolean
     info?: boolean
     createdAt?: boolean
   }
 
-  export type ExpressionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "text" | "info" | "createdAt", ExtArgs["result"]["expression"]>
+  export type ExpressionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "text" | "author" | "info" | "createdAt", ExtArgs["result"]["expression"]>
 
   export type $ExpressionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Expression"
@@ -1090,6 +1101,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       text: string
+      author: string
       info: string
       createdAt: Date
     }, ExtArgs["result"]["expression"]>
@@ -1517,6 +1529,7 @@ export namespace Prisma {
   interface ExpressionFieldRefs {
     readonly id: FieldRef<"Expression", 'Int'>
     readonly text: FieldRef<"Expression", 'String'>
+    readonly author: FieldRef<"Expression", 'String'>
     readonly info: FieldRef<"Expression", 'String'>
     readonly createdAt: FieldRef<"Expression", 'DateTime'>
   }
@@ -1897,6 +1910,7 @@ export namespace Prisma {
   export const ExpressionScalarFieldEnum: {
     id: 'id',
     text: 'text',
+    author: 'author',
     info: 'info',
     createdAt: 'createdAt'
   };
@@ -1954,6 +1968,7 @@ export namespace Prisma {
     NOT?: ExpressionWhereInput | ExpressionWhereInput[]
     id?: IntFilter<"Expression"> | number
     text?: StringFilter<"Expression"> | string
+    author?: StringFilter<"Expression"> | string
     info?: StringFilter<"Expression"> | string
     createdAt?: DateTimeFilter<"Expression"> | Date | string
   }
@@ -1961,23 +1976,26 @@ export namespace Prisma {
   export type ExpressionOrderByWithRelationInput = {
     id?: SortOrder
     text?: SortOrder
+    author?: SortOrder
     info?: SortOrder
     createdAt?: SortOrder
   }
 
   export type ExpressionWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    text?: string
     AND?: ExpressionWhereInput | ExpressionWhereInput[]
     OR?: ExpressionWhereInput[]
     NOT?: ExpressionWhereInput | ExpressionWhereInput[]
+    text?: StringFilter<"Expression"> | string
+    author?: StringFilter<"Expression"> | string
     info?: StringFilter<"Expression"> | string
     createdAt?: DateTimeFilter<"Expression"> | Date | string
-  }, "id" | "text">
+  }, "id">
 
   export type ExpressionOrderByWithAggregationInput = {
     id?: SortOrder
     text?: SortOrder
+    author?: SortOrder
     info?: SortOrder
     createdAt?: SortOrder
     _count?: ExpressionCountOrderByAggregateInput
@@ -1993,12 +2011,14 @@ export namespace Prisma {
     NOT?: ExpressionScalarWhereWithAggregatesInput | ExpressionScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Expression"> | number
     text?: StringWithAggregatesFilter<"Expression"> | string
+    author?: StringWithAggregatesFilter<"Expression"> | string
     info?: StringWithAggregatesFilter<"Expression"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Expression"> | Date | string
   }
 
   export type ExpressionCreateInput = {
     text: string
+    author?: string
     info: string
     createdAt?: Date | string
   }
@@ -2006,12 +2026,14 @@ export namespace Prisma {
   export type ExpressionUncheckedCreateInput = {
     id?: number
     text: string
+    author?: string
     info: string
     createdAt?: Date | string
   }
 
   export type ExpressionUpdateInput = {
     text?: StringFieldUpdateOperationsInput | string
+    author?: StringFieldUpdateOperationsInput | string
     info?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2019,6 +2041,7 @@ export namespace Prisma {
   export type ExpressionUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     text?: StringFieldUpdateOperationsInput | string
+    author?: StringFieldUpdateOperationsInput | string
     info?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2026,12 +2049,14 @@ export namespace Prisma {
   export type ExpressionCreateManyInput = {
     id?: number
     text: string
+    author?: string
     info: string
     createdAt?: Date | string
   }
 
   export type ExpressionUpdateManyMutationInput = {
     text?: StringFieldUpdateOperationsInput | string
+    author?: StringFieldUpdateOperationsInput | string
     info?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2039,6 +2064,7 @@ export namespace Prisma {
   export type ExpressionUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     text?: StringFieldUpdateOperationsInput | string
+    author?: StringFieldUpdateOperationsInput | string
     info?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2082,6 +2108,7 @@ export namespace Prisma {
   export type ExpressionCountOrderByAggregateInput = {
     id?: SortOrder
     text?: SortOrder
+    author?: SortOrder
     info?: SortOrder
     createdAt?: SortOrder
   }
@@ -2093,6 +2120,7 @@ export namespace Prisma {
   export type ExpressionMaxOrderByAggregateInput = {
     id?: SortOrder
     text?: SortOrder
+    author?: SortOrder
     info?: SortOrder
     createdAt?: SortOrder
   }
@@ -2100,6 +2128,7 @@ export namespace Prisma {
   export type ExpressionMinOrderByAggregateInput = {
     id?: SortOrder
     text?: SortOrder
+    author?: SortOrder
     info?: SortOrder
     createdAt?: SortOrder
   }

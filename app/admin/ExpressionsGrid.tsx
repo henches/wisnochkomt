@@ -19,21 +19,25 @@ export interface ExpressionsGridProps {
 }
 export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProps) => {
     const colDefs = useMemo<ColDef<GridExpression>[]>(() => ([
-        // {
-        //     field: 'id',
-        //     flex: 1
-        // },
         {
-            field: 'text', flex: 5,
+            headerName: 'Expression',
+            field: 'text',
+            flex: 5,
             editable: false,
         },
         {
+            headerName: 'Auteur',
+            field: 'author',
+            flex: 1,
+        },
+        {
+            headerName: 'Contexte',
             field: 'info',
             flex: 2,
         },
         {
             colId: 'suppress',
-            flex: 1,
+            width: 20,
             cellRenderer: SuppressButonCellRenderer,
             style: { paddingLeft: '0' }
         }
@@ -41,7 +45,7 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
 
     console.log("🚀 ~ ExpressionsGrid ~ props.expressions:", props.expressions)
     return (
-        <div className="ag-theme-alpine" style={{ width: "100%", flex: 1 }}>
+        <div className="ag-theme-alpine" style={{ height: '100%', width: '100%', flex: 1 }}>
             <AgGridReact
                 rowData={props.expressions}
                 columnDefs={colDefs}

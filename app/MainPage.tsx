@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import "tailwindcss";
 import { createExpressionAction, getExpressionsAction, modifyExpressionAction } from "./admin/expressions/expressions.action";
 import { ExpressionsGrid } from "./admin/ExpressionsGrid";
+import TextArea from "antd/es/input/TextArea";
 
 type RowType = {
   text?: string
@@ -108,9 +109,12 @@ export default function MainPage(props: MainPage) {
           onFinish={onFinish}
         >
           <Form.Item<RowType> label="Texte" name="text" rules={[{ required: true, message: 'Merci de saisir le texte' }]} >
+            <TextArea rows={2} />
+          </Form.Item>
+          <Form.Item<RowType> label="Auteur" name="author" >
             <Input />
           </Form.Item>
-          <Form.Item<RowType> label="Infos" name="info" >
+          <Form.Item<RowType> label="Contexte" name="info" >
             <Input />
           </Form.Item>
         </Form>

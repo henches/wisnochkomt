@@ -54,6 +54,7 @@ export const createExpressionAction = async (expression: Expression) => {
         await prisma.expression.create({
             data: {
                 text: expression.text,
+                author: expression.author,
                 info: expression.info
             }
         });

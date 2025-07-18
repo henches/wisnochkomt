@@ -1,8 +1,8 @@
 "use server"
 
-import { PrismaClientKnownRequestError } from "@/generated/prisma/runtime/library"
 import { prisma } from "@/src/lib/prisma"
 import { Expression } from "@/types/Expression"
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 
 export const getExpressionsAction: () => Promise<Expression[]> = async () => {
     console.log("GET !!!!!!!!!!!!!!!!!!!!!!!")

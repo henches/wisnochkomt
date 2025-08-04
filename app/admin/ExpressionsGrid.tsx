@@ -36,13 +36,13 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
         {
             headerName: 'Auteur',
             field: 'author',
-            flex: 1,
+            flex: 2,
             filter: true
         },
         {
             headerName: 'Contexte',
             field: 'info',
-            flex: 2,
+            flex: 1,
             filter: true
         },
         {
@@ -52,7 +52,6 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
         }
     ]), []);
 
-    console.log("🚀 ~ ExpressionsGrid ~ props.expressions:", props.expressions)
 
     const myTheme = themeQuartz
         .withParams({
@@ -74,7 +73,7 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
             headerFontWeight: 700,
             headerTextColor: "white",
             headerVerticalPaddingScale: 1.5,
-            oddRowBackgroundColor: "#363F6C",
+            oddRowBackgroundColor: "#3A4270",
             rangeSelectionBackgroundColor: "#FFFF0020",
             rangeSelectionBorderColor: "lightGrey",
             rowBorder: true,

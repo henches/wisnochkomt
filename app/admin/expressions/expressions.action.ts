@@ -5,8 +5,6 @@ import { Expression } from "@/types/Expression"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 
 export const getExpressionsAction: () => Promise<Expression[]> = async () => {
-    console.log("GET !!!!!!!!!!!!!!!!!!!!!!!")
-    console.log("DB URL:", process.env.DATABASE_URL)
     try {
 
         const _expressions: Expression[] = await prisma.expression.findMany({
@@ -14,7 +12,6 @@ export const getExpressionsAction: () => Promise<Expression[]> = async () => {
                 createdAt: "desc"
             }
         })
-        console.log("after !!!!!!!!!!!!!!!!!!!!!!!")
 
         return _expressions
     } catch (error) {
@@ -24,16 +21,14 @@ export const getExpressionsAction: () => Promise<Expression[]> = async () => {
 }
 
 export const modifyExpressionAction = async (expressionId: number, expression: Expression) => {
-    console.log("🚀 ~ modifyExpressionAction ~ expression:", expression)
-    console.log("🚀 ~ createExpressionAction ~ expressionId:", expressionId)
     try {
-        console.log("zzzz")
         await prisma.expression.update({
             where: {
                 id: expressionId
             },
             data: {
                 text: expression.text,
+                author: expression.author,
                 info: expression.info
             }
         });
@@ -48,9 +43,7 @@ export const modifyExpressionAction = async (expressionId: number, expression: E
 }
 
 export const createExpressionAction = async (expression: Expression) => {
-    console.log("🚀 ~ createExpressionAction ~ expression:", expression)
     try {
-        console.log("zzzz")
         await prisma.expression.create({
             data: {
                 text: expression.text,
@@ -70,7 +63,6 @@ export const createExpressionAction = async (expression: Expression) => {
 
 
 export const deleteExpressionAction = async (id: number) => {
-    console.log("🚀 ~ deleteExpressionAction ~ id:", id)
     try {
         await prisma.expression.delete({
             where: {
@@ -85,22 +77,18 @@ export const deleteExpressionAction = async (id: number) => {
 }
 
 export const importExpressionsAction = async (expressions: Expression[]) => {
-    console.log("🚀 ~ replaceExpressionsAction ~ expressions:", expressions)
 
     try {
         await prisma.expression.deleteMany({});
-        console.log('Toutes les expressions ont été supprimés.');
 
         const expressionsToAdd = expressions.map(expression => ({
             text: expression.text,
             author: expression.author,
             info: expression.info
         }))
-        console.log("🚀 ~ importExpressionsAction ~ expressionsToAdd:", expressionsToAdd)
         const newUser = await prisma.expression.createMany({
             data: expressionsToAdd
         });
-        console.log('Nouveelles expressions créées :', newUser);
     }
     catch (error) {
         // Gestion des erreurs spécifiques

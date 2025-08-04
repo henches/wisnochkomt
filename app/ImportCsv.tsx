@@ -26,14 +26,12 @@ export const ImportCsv: React.FC<ImportCsvProps> = ({ actAfterLoad }) => {
         skipEmptyLines: true,
         delimiter: '|',
         complete: (results: Papa.ParseResult<CsvData>) => {
-          console.log("🚀 ~ results.data:", results.data)
           const expressions: Expression[] = results.data.map(csvLine => ({
             text: csvLine.text ?? '',
             author: csvLine.author ?? '',
             info: csvLine.info ?? ''
           }))
           importExpressionsAction(expressions);
-          console.log("🚀 ~ expressions:", expressions)
           actAfterLoad()
         },
       });

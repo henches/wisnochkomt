@@ -50,12 +50,12 @@ export default function Toolbar(props: ToolbarProps) {
     setIsImportPopinOpen(false);
     onClose();
     if (props.refreshRef?.current) props.refreshRef.current();
-  } 
+  }
 
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px', background: BACKGROUND_COLOR, height: TOOLBAR_HEIGHT }}>
-        <div style={{fontSize: '14px', fontWeight: 'bold', color: 'white', letterSpacing: '-0,5px', marginLeft: '10px', marginTop: '5px'}}>WNK</div>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'white', letterSpacing: '-0,5px', marginLeft: '10px', marginTop: '5px' }}>WisNochKomt</div>
         <div>
           <Button type="text" icon={<MenuOutlined />} onClick={showDrawer} />
         </div>
@@ -73,7 +73,7 @@ export default function Toolbar(props: ToolbarProps) {
             <CancelBtn />
           </>
         )}>
-        <ImportCsv actAfterLoad={actAfterLoad}/>
+        <ImportCsv actAfterLoad={actAfterLoad} />
       </Modal>
     </>
   );

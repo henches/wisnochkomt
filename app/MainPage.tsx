@@ -35,7 +35,6 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
 
   const refresh = useCallback(async () => {
     const _expressions = await getExpressionsAction()
-    console.log("🚀 ~ refresh ~ _expressions:", _expressions)
     setExpressions(_expressions)
   }, []);
 
@@ -69,19 +68,16 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
       author: values.author ?? '',
       info: values.info ?? ''
     }
-    console.log("🚀 ~ constonFinish:FormProps<FieldType>['onFinish']= ~ expression:", expression)
     const result = await (createOrModifyId === undefined ?
       createExpressionAction(expression) :
       modifyExpressionAction(createOrModifyId, expression));
     message.success(createOrModifyId === undefined ? "Crée" : "Modifié");
-    console.log("🚀 ~ constonFinish:FormProps<FieldType>['onFinish']= ~ result:", result)
     if (result.message) {
       refresh();
     }
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("🚀 ~ onChange ~ event:", event)
     setTextFilter(event.target.value)
   };
 
@@ -89,9 +85,11 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
     <>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', padding: '10px', paddingBottom: '20px', gap: '15px' }}>
         <div style={{ flexGrow: 1, gap: '10px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ color: 'white' }}>Filtre:</span>
-            <Input value={textFilter} onChange={onChange} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Input value={textFilter} onChange={onChange} placeholder='entrez un filtre textuel ici' style={{maxWidth: 200, minWidth: 150}} />
+            <Button onClick={() => setCreateOrModifyId(undefined)}>
+              <PlusIcon />
+            </Button>
           </div>
           <ExpressionsGrid
             gridRef={gridRef as React.RefObject<AgGridReact>}
@@ -100,9 +98,7 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
             actOnRowClick={setCreateOrModifyId}
             textFilter={textFilter} />
         </div>
-        <Button onClick={() => setCreateOrModifyId(undefined)}>
-          <PlusIcon />
-        </Button>
+
       </div>
       <Modal
         open={createOrModifyId !== null}
@@ -120,7 +116,7 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
           onFinish={onFinish}
         >
           <Form.Item<RowType> label="Texte" name="text" rules={[{ required: true, message: 'Merci de saisir le texte' }]} >
-            <TextArea rows={2} />
+            <TextArea rows={4} />
           </Form.Item>
           <Form.Item<RowType> label="Auteur" name="author" >
             <Input />

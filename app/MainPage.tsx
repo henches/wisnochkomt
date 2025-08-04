@@ -21,16 +21,17 @@ const INTITIAL_VALUES = {
   info: ''
 }
 
-export interface MainPage {
+export interface MainPageProps {
   gridRef: React.RefObject<AgGridReact | null>,
   refreshRef: React.RefObject<VoidFunction | null>
 }
 
-export default function MainPage(props: MainPage) {
+export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
   const [expressions, setExpressions] = useState<Expression[]>([])
   const [createOrModifyId, setCreateOrModifyId] = useState<number | null | undefined>(null); // null: popin close, undefined : creation, number : id de l'expression
   const [form] = Form.useForm<RowType>();
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [textFilter, setTextFilter] = useState<string>('')
 
   const refresh = useCallback(async () => {
     const _expressions = await getExpressionsAction()
@@ -39,8 +40,8 @@ export default function MainPage(props: MainPage) {
   }, []);
 
   useEffect(() => {
-    props.refreshRef.current = refresh
-  }, [props.refreshRef, refresh]);
+    refreshRef.current = refresh
+  }, [refreshRef, refresh]);
 
   useEffect(() => {
     refresh();
@@ -79,15 +80,25 @@ export default function MainPage(props: MainPage) {
     }
   };
 
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("🚀 ~ onChange ~ event:", event)
+    setTextFilter(event.target.value)
+  };
+
   return (
     <>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', padding: '10px', paddingBottom: '20px', gap: '15px' }}>
-        <div style={{ flexGrow: 1 }}>
+        <div style={{ flexGrow: 1, gap: '10px', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ color: 'white' }}>Filtre:</span>
+            <Input value={textFilter} onChange={onChange} />
+          </div>
           <ExpressionsGrid
-            gridRef={props.gridRef as React.RefObject<AgGridReact>}
+            gridRef={gridRef as React.RefObject<AgGridReact>}
             expressions={expressions}
             refresh={refresh}
-            actOnRowClick={setCreateOrModifyId} />
+            actOnRowClick={setCreateOrModifyId}
+            textFilter={textFilter} />
         </div>
         <Button onClick={() => setCreateOrModifyId(undefined)}>
           <PlusIcon />

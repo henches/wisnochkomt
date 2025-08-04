@@ -6,12 +6,13 @@ import Toolbar from './Toolbar';
 import MainPage from './MainPage';
 import { ConfigProvider, theme } from 'antd';
 import { BACKGROUND_COLOR } from './constants';
+import { App as AntdApp } from 'antd';
 
 export default function App() {
   const gridRef = useRef<AgGridReact>(null);
   const refreshRef = useRef<VoidFunction | null>(null);
 
-  const { defaultAlgorithm, darkAlgorithm } = theme;
+  const { darkAlgorithm } = theme;
 
   return (
     <ConfigProvider
@@ -28,10 +29,10 @@ export default function App() {
         },
       }}
     >
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'column', width: '100%' }}>
-        <Toolbar gridRef={gridRef} refreshRef={refreshRef} />
-        <MainPage gridRef={gridRef} refreshRef={refreshRef} />
-      </div>
+      <AntdApp style={{ height: '100%', display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <Toolbar gridRef={gridRef} refreshRef={refreshRef} />
+          <MainPage gridRef={gridRef} refreshRef={refreshRef} />
+      </AntdApp>
     </ConfigProvider>
   )
 }

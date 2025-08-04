@@ -81,7 +81,7 @@ export default function MainPage(props: MainPage) {
 
   return (
     <>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', padding: '10px', gap: '15px' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', padding: '10px', paddingBottom: '20px', gap: '15px' }}>
         <div style={{ flexGrow: 1 }}>
           <ExpressionsGrid
             gridRef={props.gridRef as React.RefObject<AgGridReact>}

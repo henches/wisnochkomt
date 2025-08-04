@@ -1,3 +1,22 @@
 :where(.ag-ltr) .ag-cell:not(.ag-cell-inline-editing) {
   padding-left: 4
 }
+
+.custom-grid {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.custom-row {
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.ag-row:hover {
+  background:  rgb(18, 21, 48) !important;
+}
+
+.ag-row-selected {
+  background:  rgb(18, 21, 48) !important;
+}

@@ -6,6 +6,7 @@ import { AgGridReact } from "ag-grid-react";
 import { useMemo } from "react";
 import { SuppressButonCellRenderer } from "./CellRenderers";
 import './expressions.css';
+import { themeQuartz } from 'ag-grid-community';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -19,6 +20,11 @@ export interface ExpressionsGridProps {
 }
 export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProps) => {
     const colDefs = useMemo<ColDef<GridExpression>[]>(() => ([
+        {
+            field: 'id',
+            hide: true,
+            sort: 'asc'
+        },
         {
             headerName: 'Expression',
             field: 'text',
@@ -39,13 +45,45 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
             colId: 'suppress',
             width: 20,
             cellRenderer: SuppressButonCellRenderer,
-            style: { paddingLeft: '0' }
         }
     ]), []);
 
     console.log("🚀 ~ ExpressionsGrid ~ props.expressions:", props.expressions)
+
+const myTheme = themeQuartz
+	.withParams({
+        accentColor: "slateGrey",
+        backgroundColor: "#48538A",
+        borderColor: "slateGrey",
+        borderRadius: 5,
+        browserColorScheme: "dark",
+        cellHorizontalPaddingScale: 0.8,
+        cellTextColor: "white",
+        columnBorder: true,
+        fontFamily: {
+            googleFont: "IBM Plex Mono"
+        },
+        fontSize: 16,
+        foregroundColor: "#68FF8E",
+        headerBackgroundColor: "#48538A",
+        headerFontSize: 14,
+        headerFontWeight: 700,
+        headerTextColor: "white" ,
+        headerVerticalPaddingScale: 1.5,
+        oddRowBackgroundColor: "#363F6C",
+        rangeSelectionBackgroundColor: "#FFFF0020",
+        rangeSelectionBorderColor: "lightGrey",
+        rowBorder: true,
+        rowVerticalPaddingScale: 1.5,
+        sidePanelBorder: true,
+        spacing: 4,
+        wrapperBorder: true,
+        wrapperBorderRadius: 0
+    });
+
+
     return (
-        <div className="ag-theme-alpine" style={{ height: '100%', width: '100%', flex: 1 }}>
+        <div className="ag-theme-alpine custom-grid" style={{ height: '100%', width: '100%', flex: 1 }}>
             <AgGridReact
                 rowData={props.expressions}
                 columnDefs={colDefs}
@@ -54,6 +92,7 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
                     if (event.data && ['info', 'text'].includes(event.column.getColId())) actOnRowClick(event.data?.id)
                 }}
                 ref={props.gridRef}
+                theme={myTheme}
             />
         </div>
     )

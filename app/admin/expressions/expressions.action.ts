@@ -6,8 +6,8 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 
 export const getExpressionsAction: () => Promise<Expression[]> = async () => {
     console.log("GET !!!!!!!!!!!!!!!!!!!!!!!")
+    console.log("DB URL:", process.env.DATABASE_URL)
     try {
-        console.log("try !!!!!!!!!!!!!!!!!!!!!!!")
 
         const _expressions: Expression[] = await prisma.expression.findMany({
             orderBy: {

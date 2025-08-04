@@ -5,6 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { Button, Drawer, Menu, MenuProps, Modal } from 'antd';
 import { useState } from "react";
 import { ImportCsv } from './ImportCsv';
+import { BACKGROUND_COLOR } from './constants';
 
 const TOOLBAR_HEIGHT = '35px'
 
@@ -53,14 +54,14 @@ export default function Toolbar(props: ToolbarProps) {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px', background: '#f0f2f5', height: TOOLBAR_HEIGHT }}>
-        <div>Logo</div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px', background: BACKGROUND_COLOR, height: TOOLBAR_HEIGHT }}>
+        <div style={{fontSize: '14px', fontWeight: 'bold', color: 'white', letterSpacing: '-0,5px', marginLeft: '10px', marginTop: '5px'}}>WNK</div>
         <div>
           <Button type="text" icon={<MenuOutlined />} onClick={showDrawer} />
         </div>
       </div>
       <Drawer placement="top" closable={true} onClose={onClose}
-        open={isDrawerOpen} height='auto' style={{ marginLeft: 'auto', marginTop: TOOLBAR_HEIGHT, width: '400px' }} >
+        open={isDrawerOpen} height='auto' style={{ marginLeft: 'auto', marginTop: TOOLBAR_HEIGHT, width: '400px', color: 'white' }} >
         <Menu mode="inline" items={items} onClick={onClick} />
       </Drawer>
       <Modal

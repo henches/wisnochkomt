@@ -17,13 +17,14 @@ export const SuppressButonCellRenderer: FunctionComponent<ICellRendererParams<Ex
     }
   }
   return (
-    <div style={{ display: 'flex', paddingTop: '10px' }} >
+    <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px'}} >
       <span onClick={() => { setIsOpen(true) }}>
-        <Trash2Icon style={{ paddingTop: '5px', height: '20px' }} />
+        <Trash2Icon style={{
+          height: '15px' }} />
       </span>
       <Modal
         open={isOpen}
-        title={`confirmer la suppression`}
+        title={`Confirmer la suppression`}
         onOk={() => { setIsOpen(false); handleConfirm() }}
         onCancel={() => setIsOpen(false)}
         footer={(_, { OkBtn, CancelBtn }) => (

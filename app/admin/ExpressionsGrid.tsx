@@ -4,7 +4,6 @@ import type { ColDef } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { useMemo } from "react";
-import { SuppressButonCellRenderer } from "./CellRenderers";
 import './expressions.css';
 import { themeQuartz } from 'ag-grid-community';
 
@@ -13,25 +12,30 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 interface GridExpression extends Expression { id?: number };
 
 export interface ExpressionsGridProps {
-    expressions: Expression[]
+    expressions: Expression[] | undefined
     refresh: () => void;
     actOnRowClick: (id?: number) => void
     gridRef: React.RefObject<AgGridReact<GridExpression>>;
     textFilter: string
 }
 export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProps) => {
+
+    const defaultColDef = useMemo<ColDef<GridExpression>>(() => ({
+        suppressHeaderFilterButton: true
+    }), []);
+
     const colDefs = useMemo<ColDef<GridExpression>[]>(() => ([
         {
             field: 'id',
             hide: true,
-            sort: 'asc'
+            sort: 'desc'
         },
         {
             headerName: 'Expression',
             field: 'text',
             flex: 5,
             editable: false,
-            filter: true
+            filter: true,
         },
         {
             headerName: 'Auteur',
@@ -44,11 +48,6 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
             field: 'info',
             flex: 1,
             filter: true
-        },
-        {
-            colId: 'suppress',
-            width: 20,
-            cellRenderer: SuppressButonCellRenderer,
         }
     ]), []);
 
@@ -89,6 +88,7 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
         <div className="ag-theme-alpine custom-grid" style={{ height: '100%', width: '100%', flex: 1 }}>
             <AgGridReact
                 rowData={props.expressions}
+                defaultColDef={defaultColDef}
                 columnDefs={colDefs}
                 context={{ refresh: props.refresh }}
                 onCellClicked={(event) => {
@@ -97,7 +97,11 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
                 ref={props.gridRef}
                 theme={myTheme}
                 quickFilterText={props.textFilter}
+                overlayLoadingTemplate="
+                    <span class='ag-overlay-loading-center' style='color: white; font-weight: bold;'>
+                        ⏳ Chargement des données...
+                    </span>"
             />
-        </div>
+        </div >
     )
 }

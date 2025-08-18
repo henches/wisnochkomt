@@ -38,6 +38,7 @@ export default function Toolbar(props: ToolbarProps) {
       label: 'Importer',
       key: 'import',
       icon: <ImportOutlined />,
+      disabled: true
     },
   ]
 
@@ -55,12 +56,12 @@ export default function Toolbar(props: ToolbarProps) {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px', background: BACKGROUND_COLOR, height: TOOLBAR_HEIGHT }}>
-        <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'white', letterSpacing: '-0,5px', marginLeft: '10px', marginTop: '5px' }}>WisNochKomt</div>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'white', letterSpacing: '-0,5px', marginLeft: '10px', marginTop: '5px' }}>Wi's noch komm't...</div>
         <div>
           <Button type="text" icon={<MenuOutlined />} onClick={showDrawer} />
         </div>
       </div>
-      <Drawer placement="top" closable={true} onClose={onClose}
+      <Drawer placement="top" closable={true} onClose={onClose} title="Actions..."
         open={isDrawerOpen} height='auto' style={{ marginLeft: 'auto', marginTop: TOOLBAR_HEIGHT, width: '400px', color: 'white' }} >
         <Menu mode="inline" items={items} onClick={onClick} />
       </Drawer>

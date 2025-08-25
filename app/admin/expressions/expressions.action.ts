@@ -91,13 +91,10 @@ export const importExpressionsAction = async (expressions: Expression[]) => {
         });
     }
     catch (error) {
-        // Gestion des erreurs spécifiques
         if (error instanceof PrismaClientKnownRequestError) {
-            // Erreurs connues de Prisma
             console.error('Prisma error:', error.message);
             return { success: false, message: "Erreur de base de données", error: error.message };
         } else {
-            // Autres types d'erreurs
             console.error('Unexpected error:', error);
             return { success: false, message: "Erreur inattendue", error: error instanceof Error ? error.message : String(error) };
         }

@@ -56,7 +56,7 @@ export default function Toolbar(props: ToolbarProps) {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px', background: BACKGROUND_COLOR, height: TOOLBAR_HEIGHT }}>
-        <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'white', letterSpacing: '-0,5px', marginLeft: '10px', marginTop: '5px' }}>Wi's noch komm't...</div>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'white', letterSpacing: '-0,5px', marginLeft: '10px', marginTop: '5px' }}>WNK</div>
         <div>
           <Button type="text" icon={<MenuOutlined />} onClick={showDrawer} />
         </div>

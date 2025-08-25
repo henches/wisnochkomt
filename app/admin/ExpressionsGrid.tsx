@@ -33,7 +33,7 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
         {
             headerName: 'Expression',
             field: 'text',
-            flex: 5,
+            flex: 7,
             editable: false,
             filter: true,
         },
@@ -47,7 +47,8 @@ export const ExpressionsGrid = ({ actOnRowClick, ...props }: ExpressionsGridProp
             headerName: 'Contexte',
             field: 'info',
             flex: 1,
-            filter: true
+            filter: true,
+            hide: true
         }
     ]), []);
 

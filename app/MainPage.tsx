@@ -32,6 +32,7 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
   const [createOrModifyId, setCreateOrModifyId] = useState<number | null | undefined>(null); // null: popin close, undefined : creation, number : id de l'expression
   const [form] = Form.useForm<RowType>();
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [hasFormChanged, setHasFormChanged] = useState<boolean>(false)
   const [textFilter, setTextFilter] = useState<string>('')
 
   const { message, modal } = App.useApp();
@@ -81,7 +82,7 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
     }
   };
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTextFilter(event.target.value)
   };
 
@@ -108,12 +109,13 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
     });
   };
 
+
   return (
     <>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', padding: '10px', paddingBottom: '20px', gap: '15px' }}>
         <div style={{ flexGrow: 1, gap: '10px', display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Input value={textFilter} onChange={onChange} placeholder='filtre' style={{ maxWidth: 200, minWidth: 150 }} />
+            <Input value={textFilter} onChange={onFilterChange} placeholder='filtre' style={{ maxWidth: 200, minWidth: 150 }} />
             <span>{expressions ? expressions.length : ''}</span>
             <Button onClick={() => setCreateOrModifyId(undefined)}>
               <PlusIcon />
@@ -138,10 +140,10 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
               Supprimer
             </Button>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <Button key="back" onClick={() => setCreateOrModifyId(null)}>
+              <Button key="back" onClick={() => setCreateOrModifyId(null)} disabled={hasFormChanged}>
                 Annuler
               </Button>
-              <Button key="submit" onClick={onOk} >
+              <Button key="submit" onClick={onOk} disabled={hasFormChanged} >
                 Confirmer
               </Button>
             </div>
@@ -151,14 +153,14 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
         <Form form={form} style={{ maxWidth: 600 }} initialValues={INTITIAL_VALUES}
           onFinish={onFinish}
         >
-          <Form.Item<RowType> label="Texte" name="text" rules={[{ required: true, message: 'Merci de saisir le texte' }]} >
-            <TextArea rows={4} />
+          <Form.Item<RowType> label="Texte" name="text" rules={[{ required: true, message: 'Merci de saisir le texte' }]}  >
+            <TextArea rows={4} style={{ caretColor: 'white' }}/>
           </Form.Item>
           <Form.Item<RowType> label="Auteur" name="author" >
-            <TextArea rows={2} />
+            <TextArea rows={2} style={{ caretColor: 'white' }} />
           </Form.Item>
           <Form.Item<RowType> label="Contexte" name="info" >
-            <TextArea rows={4} />
+            <TextArea rows={4} style={{ caretColor: 'white' }} />
           </Form.Item>
         </Form>
       </Modal>

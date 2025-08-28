@@ -38,12 +38,26 @@ export default function Toolbar(props: ToolbarProps) {
       label: 'Importer',
       key: 'import',
       icon: <ImportOutlined />,
-      disabled: true
+      // disabled: true
     },
   ]
 
   const onClick: MenuProps['onClick'] = ({ key }) => {
-    if (key === 'export') props.gridRef?.current?.api.exportDataAsCsv();
+    const date = new Date();
+    const formatter = new Intl.DateTimeFormat('fr-FR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
+    const readableDate = formatter.format(date);
+    if (key === 'export') props.gridRef?.current?.api.exportDataAsCsv({
+      processCellCallback: (params) => {
+        return params.value;
+      },
+      processHeaderCallback: (params) => params.column.getColId(),
+      columnKeys: ['text', 'author', 'info'], // Spécifiez explicitement les colonnes à exporter
+      fileName: `export-WisNochKomt-${readableDate}.csv`
+    });
     if (key === 'import') setIsImportPopinOpen(true);
   }
 

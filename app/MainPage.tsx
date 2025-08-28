@@ -6,8 +6,8 @@ import { App, Button, Form, FormProps, Input, message, Modal } from 'antd';
 import { PlusIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import "tailwindcss";
-import { createExpressionAction, deleteExpressionAction, getExpressionsAction, modifyExpressionAction } from "./admin/expressions/expressions.action";
-import { ExpressionsGrid } from "./admin/ExpressionsGrid";
+import { createExpressionAction, deleteExpressionAction, getExpressionsAction, modifyExpressionAction } from "./actions/expressions.action";
+import { ExpressionsGrid } from "./expressionsGrid/ExpressionsGrid";
 import TextArea from "antd/es/input/TextArea";
 import modal from "antd/es/modal";
 
@@ -51,7 +51,6 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
   }, [refresh])
 
   useEffect(() => {
-    console.log("createOrModifyId", createOrModifyId, "expressions", expressions);
     if (createOrModifyId === null || !expressions) return;
     if (createOrModifyId === undefined) form.resetFields();
     else {
@@ -154,7 +153,7 @@ export default function MainPage({ gridRef, refreshRef }: MainPageProps) {
           onFinish={onFinish}
         >
           <Form.Item<RowType> label="Texte" name="text" rules={[{ required: true, message: 'Merci de saisir le texte' }]}  >
-            <TextArea rows={4} style={{ caretColor: 'white' }}/>
+            <TextArea rows={4} style={{ caretColor: 'white' }} />
           </Form.Item>
           <Form.Item<RowType> label="Auteur" name="author" >
             <TextArea rows={2} style={{ caretColor: 'white' }} />

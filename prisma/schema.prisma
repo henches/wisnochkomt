@@ -17,3 +17,11 @@ model Expression {
   info      String
   createdAt DateTime @default(now())
 }
+
+model User {
+  id          Int      @id @default(autoincrement())
+  userName    String
+  hashPassord String
+  role        String
+  createdAt   DateTime @default(now())
+}

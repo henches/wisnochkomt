@@ -77,7 +77,7 @@ export const deleteExpressionAction = async (id: number) => {
 }
 
 export const importExpressionsAction = async (expressions: Expression[]) => {
-
+console.log("import : expressions", expressions)
     try {
         await prisma.expression.deleteMany({});
 
@@ -86,6 +86,7 @@ export const importExpressionsAction = async (expressions: Expression[]) => {
             author: expression.author,
             info: expression.info
         }))
+        console.log("expressionsToAdd =********************************************************** ", expressionsToAdd)
         const newUser = await prisma.expression.createMany({
             data: expressionsToAdd
         });

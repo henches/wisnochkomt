@@ -5,7 +5,7 @@ import '@ant-design/v5-patch-for-react-19';
 import { Button, message, UploadProps } from 'antd';
 import Upload, { UploadChangeParam, UploadFile } from 'antd/es/upload';
 import Papa from 'papaparse';
-import { importExpressionsAction } from './admin/expressions/expressions.action';
+import { importExpressionsAction } from './actions/expressions.action';
 
 interface CsvData {
   [key: string]: string;
@@ -21,17 +21,20 @@ export const ImportCsv: React.FC<ImportCsvProps> = ({ actAfterLoad }) => {
     accept: '.csv',
     showUploadList: false, // Masquer la liste des fichiers téléchargés
     beforeUpload: (file) => {
+      console.log("file = ", file)
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
-        delimiter: '|',
+        delimiter: ',',
         complete: (results: Papa.ParseResult<CsvData>) => {
+          console.log("results = ", results)
           const expressions: Expression[] = results.data.map(csvLine => ({
+            // id: parseInt(csvLine.id),
             text: csvLine.text ?? '',
             author: csvLine.author ?? '',
             info: csvLine.info ?? ''
           }))
-          importExpressionsAction(expressions);
+          importExpressionsAction(expressions.reverse());
           actAfterLoad()
         },
       });

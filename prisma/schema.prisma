@@ -20,8 +20,8 @@ model Expression {
 
 model User {
   id          Int      @id @default(autoincrement())
-  userName    String
-  hashPassord String
+  userName    String   @unique
+  hashPassword String
   role        String
   createdAt   DateTime @default(now())
 }

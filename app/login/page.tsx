@@ -1,53 +1,50 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Form, FormProps, Input } from 'antd';
+import { checkLoginRequest, LoginRequest } from "../actions/users.action";
+
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [err, setErr] = useState<string | null>(null);
   const router = useRouter();
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setErr(null);
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+  type LoginInfo = {
+    userName?: string
+    password?: string
+  };
 
-    if (res.ok) {
-      router.push("/"); // redirigez où vous voulez (ex: /admin)
-      router.refresh();
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setErr(data?.error ?? "Échec de connexion");
+  const onFinish: FormProps<LoginInfo>['onFinish'] = async (values: LoginInfo) => {
+    console.log("onFinish = values", values)
+    const loginRequest: LoginRequest = {
+      userName: values.userName ?? '',
+      password: values.password ?? '',
     }
-  }
+    const result = await checkLoginRequest(loginRequest);
+    console.log('result = ', result)
+    router.push("/"); 
+    router.refresh();
+  };
+
 
   return (
     <main style={{ minHeight: "100dvh", display: "grid", placeItems: "center" }}>
-      <form onSubmit={onSubmit} style={{ display: "grid", gap: 12, minWidth: 280 }}>
-        <h1>Connexion</h1>
-        <input
-          type="email"
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {err && <p style={{ color: "crimson" }}>{err}</p>}
+      <Form onFinish={onFinish} style={{ display: "grid", gap: 12, minWidth: 280 }}>
+        <h1>Wi's noch komm't</h1>
+        <Form.Item<LoginInfo> label="Prénom" name="userName" rules={[{ required: true, message: 'Merci de saisir le prénom' }]}  >
+          <Input
+            placeholder="prénom (sans majuscule)"
+            required
+          />
+        </Form.Item>
+        <Form.Item<LoginInfo> label="Mot de passe" name="password" rules={[{ required: true, message: 'Merci de saisir le mot de passe' }]}  >
+          <Input
+            type="password"
+            placeholder="mot de passe"
+            required
+          />
+        </Form.Item>
         <button type="submit">Se connecter</button>
-      </form>
+      </Form>
     </main>
   );
 }

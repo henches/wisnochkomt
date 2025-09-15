@@ -21,13 +21,11 @@ export const ImportCsv: React.FC<ImportCsvProps> = ({ actAfterLoad }) => {
     accept: '.csv',
     showUploadList: false, // Masquer la liste des fichiers téléchargés
     beforeUpload: (file) => {
-      console.log("file = ", file)
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
         delimiter: ',',
         complete: (results: Papa.ParseResult<CsvData>) => {
-          console.log("results = ", results)
           const expressions: Expression[] = results.data.map(csvLine => ({
             // id: parseInt(csvLine.id),
             text: csvLine.text ?? '',

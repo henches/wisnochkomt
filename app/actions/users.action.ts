@@ -2,18 +2,61 @@
 
 import { prisma } from "@/src/lib/prisma"
 import { Expression } from "@/types/Expression"
+import { User } from "@prisma/client"
+import bcrypt from "bcrypt";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
-export const getExpressionsAction: () => Promise<Expression[]> = async () => {
+const ONE_HOUR = 60 * 60;
+const JWT_SECRET = process.env.JWT_SECRET!;
+
+export interface LoginRequest {
+    userName: string,
+    password: string
+}
+
+export const checkLoginRequest = async (request: LoginRequest): Promise<void> => {
+    console.log("request = ", request)
     try {
+        const { userName, password } = request;
+        if (!userName || !password) {
+            return Promise.reject();
+        }
 
-        const _expressions: Expression[] = await prisma.expression.findMany({
-            orderBy: {
-                createdAt: "desc"
-            }
-        })
+        const user: User | null = await prisma.user.findUnique({ where: { userName: userName } })
 
-        return _expressions
+        if (!user) {
+            return Promise.reject();
+        }
+
+        console.log("user", user)
+
+        const ok = await bcrypt.compare(password, user.hashPassword);
+        if (!ok) {
+            return Promise.reject();
+        }
+
+        console.log("ok = ", ok);
+
+        const token = jwt.sign({ sub: user.id, userName: user.userName }, JWT_SECRET, {
+            expiresIn: ONE_HOUR,
+        });
+
+        // console.log("token = ", token);
+
+        const cookieStore = await cookies();
+
+        cookieStore.set({
+            name: "auth_token",
+            value: token,
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
+            path: "/",
+            maxAge: ONE_HOUR,
+        });
+
     } catch (error) {
         console.error("Erreur lors de la récupération des utilisateurs:", error);
         throw error; // ou retournez un message d'erreur approprié
